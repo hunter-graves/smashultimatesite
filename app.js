@@ -72,6 +72,13 @@ app.post('/signup', function (req, res) {
   })
 
 
+  app.post('/deletePost', function(req,res){
+    var id = req.body.id;
+    post.deletePost(id, function(result){
+      res.send(result)
+    })
+  })
+
   app.get('/home', function (req, res) {
     if(sessions && sessions.username){
       res.sendFile(__dirname + '/html/home.html');

@@ -53,6 +53,26 @@ module.exports = {
                 }
             });
         });
+    },
+
+    deletePost: function(id, callback){
+ 
+        MongoClient.connect(url, function(err, client){
+            var db = client.db('smashsite');
+             db.collection('post').deleteOne({
+                _id: new ObjectID(id)
+             },
+             function(err, result){
+                assert.equal(err, null);
+                console.log("Deleted the post.");
+                if(err == null){
+                    callback(true)
+                }
+                else{
+                    callback(false)
+                }
+            });
+        })
     }
 
 

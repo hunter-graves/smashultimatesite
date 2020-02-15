@@ -9,25 +9,49 @@ var Link = window.ReactRouter.Link;
 class ShowPost extends React.Component {
     constructor(props) {
       super(props);
-      
+      this.deletePost = this.deletePost.bind(this);
       this.state = {
         posts:[]
       };
     }
      
-   
-    componentDidMount(){
+
+    deletePost(id){
+      if(confirm('Are you sure ?')){
+        // Delete Post API call will be here !!
+        var self = this;
+        axios.post('/deletePost', {
+          id: id
+        })
+        .then(function (response) {
+          self.getPost();
+        })
+        .catch(function (error) {
+          console.log('Error is ', error);
+        });
+      }
+    }
+
+
+    getPost(){
       var self = this;
-     
       axios.post('/getPost', {
-        
       })
       .then(function (response) {
+        console.log('res is ',response);
         self.setState({posts:response.data})
       })
       .catch(function (error) {
         console.log('error is ',error);
       });
+    }
+
+    
+    componentDidMount(){
+     this.getPost();
+
+     document.getElementById('homeHyperLink').className = "active";
+     document.getElementById('addHyperLink').className = "";
     }
 
     updatePost(id){
@@ -58,7 +82,7 @@ class ShowPost extends React.Component {
                             <span onClick={this.updatePost.bind(this,post._id)} className="glyphicon glyphicon-pencil"></span>
                             </td>
                             <td>
-                              <span className="glyphicon glyphicon-remove"></span>
+                            <span onClick={this.deletePost.bind(this,post._id)} className="glyphicon glyphicon-remove"></span>
                             </td>
                           </tr>
                 }.bind(this))
