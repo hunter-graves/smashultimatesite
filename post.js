@@ -20,5 +20,20 @@ module.exports = {
                 }
             });
         });
+    },
+
+    getPost: function(callback){
+        MongoClient.connect(url, function(err, client){
+            var db = client.db('smashsite');
+             db.collection('post', function (err, collection) {
+                collection.find().toArray(function (err, list) {
+                    callback(list);
+                });
+             });
+        })
     }
+
+
+
+    
 }

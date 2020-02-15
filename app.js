@@ -50,7 +50,11 @@ app.post('/signup', function (req, res) {
     });
   })
 
-
+  app.post('/getpost', function (req, res) {
+    post.getPost(function(result){
+      res.send(result);
+    });
+  })
 
 
   app.get('/home', function (req, res) {
