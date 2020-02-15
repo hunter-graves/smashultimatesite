@@ -1,4 +1,5 @@
 var user = require('./user')
+var post = require('./post')
 var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
@@ -16,34 +17,40 @@ app.post('/signin', function (req, res) {
   sessions = req.session;
   var user_name = req.body.email;
   var password = req.body.password;
-  
-  
-  user.validateSignIn(user_name,password,function(result)
-  {
-    if(result){
+
+  user.validateSignIn(user_name,password,function(result) {
+    if(result) {
         sessions.username = user_name;
   	    res.send('Success');
     }
-  else{
-  	res.send('Wrong username and password');
-  }
-})
+    else {
+  	    res.send('Wrong username and password');
+    }
+  })
 })
 
 app.post('/signup', function (req, res) {
     var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
-    if(name && email && password)
-    {
+    if(name && email && password) {
         user.signup(name,email,password);
     }
-    else 
-    {
+    else {
         res.send('FAILURE TO SIGN UP, CHECK TEXT FIELDS')
     }
     
   })
+
+  app.post('/addpost', function (req, res) {
+    var title = req.body.title;
+    var subject = req.body.subject;
+    post.addPost(title, subject ,function(result){
+      res.send(result);
+    });
+  })
+
+
 
 
   app.get('/home', function (req, res) {
